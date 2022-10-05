@@ -9,11 +9,12 @@ import pickle
 host = '0.0.0.0'
 port = 447
 
+
 serverMessages = {
     "filesCatalog": b"Which size of file do you want to transfer?\n1 - 250mb file. \n2 - 100mb file\n"
 }
 
-
+connections = 0
 def main():
     #Se especifíca el protocolo SOCK_STREAM = TCP
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,6 +25,8 @@ def main():
     while True:
         client, address = serversocket.accept()
         print(f'[*] Accepted connection from {address[0]}:{address[1]}')
+        print(f'[*] Numer of connections: {connections}')
+        connections += 1
         client_handler = threading.Thread(target=handle_client,args=(client,))
         client_handler.start()
 
@@ -43,6 +46,9 @@ def handle_client(client_socket):
         fileData = [file, hash]
         print(f'[*] Hash: {hash}')
         sock.send(pickle.dumps(fileData))
+
+        connections -= 1
+        sock.close()
         
 if __name__ == "__main__":
     main()
