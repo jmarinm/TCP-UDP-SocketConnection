@@ -30,9 +30,10 @@ def main():
 def handle_client(client_socket):
     with client_socket as sock:
         
+        clientId = sock.recv(1024).decode()
         sock.send(serverMessages['filesCatalog'])
         request = sock.recv(1024).decode("utf-8")
-        print(f'[*] Received: {request}')
+        print(f'[*] Received: {request} from Client {clientId}')
         if request[0] == "1":
             file = open('ServidorTCP/Files/250.img','rb') #sock.send(b'250 file')
         elif request[0] == "2":
@@ -41,9 +42,9 @@ def handle_client(client_socket):
         file = file.read()
         hash = hashlib.md5(file).hexdigest()
         fileData = [file, hash]
-        print(f'[*] Hash: {hash}')
+        print(f'[*] Hash: {hash} - Client: {clientId}')
         sock.send(pickle.dumps(fileData))
-        
+
         sock.close()
         
 if __name__ == "__main__":
