@@ -38,6 +38,7 @@ def handle_client(client_socket):
         elif request[0] == "2":
             file = open('ServidorTCP/Files/100.img','rb')#sock.send(b'100 file')
         
+        file = file.read()
         fileData = [file, hashlib.md5(file).hexdigest()]
         sock.send(pickle.dumps(fileData))
         
