@@ -5,7 +5,7 @@ import threading
  
 
 host = '0.0.0.0'
-port = 445
+port = 446
 
 serverMessages = {
     "filesCatalog": b"Which size of file do you want to transfer?\n1 - 250mb file. \n2 - 100mb file\n"
