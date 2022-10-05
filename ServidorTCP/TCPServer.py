@@ -2,6 +2,7 @@ import hashlib
 import socket
 import threading
 import pickle
+from time import time
 
 
  
@@ -43,7 +44,10 @@ def handle_client(client_socket):
         hash = hashlib.md5(file).hexdigest()
         fileData = [file, hash]
         print(f'[*] Hash: {hash} - Client: {clientId}')
+        t_inicial = time.time()
         sock.send(pickle.dumps(fileData))
+        t_final = time.time()
+        print(f'[*] Transfer Time {t_final-t_inicial}')
 
         sock.close()
         
