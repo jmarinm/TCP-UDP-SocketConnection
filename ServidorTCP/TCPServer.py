@@ -47,7 +47,7 @@ def handle_client(client_socket):
         t_inicial = time.time()
         sock.send(pickle.dumps(fileData))
         t_final = time.time()
-        print(f'[*] Transfer Time {t_final-t_inicial}')
+        print(f'[*] Transfer Time {t_final-t_inicial} for client {clientId}')
 
         sock.close()
         
