@@ -1,5 +1,7 @@
+import hashlib
 import socket
 import threading
+import pickle
 
 
  
@@ -32,9 +34,12 @@ def handle_client(client_socket):
         request = sock.recv(1024).decode("utf-8")
         print(f'[*] Received: {request}')
         if request[0] == "1":
-            sock.send(b'250 file')
+            file = open('ServidorTCP/Files/250.img','rb') #sock.send(b'250 file')
         elif request[0] == "2":
-            sock.send(b'100 file')
+            file = open('ServidorTCP/Files/100.img','rb')#sock.send(b'100 file')
+        
+        fileData = [file, hashlib.md5(file).hexdigest()]
+        sock.send(fileData)
         
 if __name__ == "__main__":
     main()
