@@ -5,7 +5,7 @@ import threading
  
 
 host = '0.0.0.0'
-port = 444
+port = 445
 
 serverMessages = {
     "filesCatalog": b"Which size of file do you want to transfer?\n1 - 250mb file. \n2 - 100mb file\n"
@@ -28,10 +28,13 @@ def main():
 def handle_client(client_socket):
     with client_socket as sock:
         
-        #sock.send(serverMessages['filesCatalog'])
+        sock.send(serverMessages['filesCatalog'])
         request = sock.recv(1024)
         print(f'[*] Received: {request.decode("utf-8")}')
-        sock.send(b'ACK')
-
+        if request[0] == "1":
+            sock.send(b'250 file')
+        elif request[0] == "2":
+            sock.send(b'100 file')
+        
 if __name__ == "__main__":
     main()
