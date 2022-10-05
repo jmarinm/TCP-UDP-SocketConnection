@@ -7,6 +7,10 @@ import threading
 host = '0.0.0.0'
 port = 444
 
+serverMessages = {
+    "filesCatalog": "Which size of file do you want to transfer?\n1 - 250mb file. \n2 - 100mb file"
+}
+
 
 def main():
     #Se especifíca el protocolo SOCK_STREAM = TCP
@@ -23,9 +27,11 @@ def main():
 
 def handle_client(client_socket):
     with client_socket as sock:
-        request = sock.recv(1024)
-        print(f'[*] Received: {request.decode("utf-8")}')
-        sock.send(b'ACK')
+        
+        sock.send(serverMessages['filesCatalog'])
+        #request = sock.recv(1024)
+        #print(f'[*] Received: {request.decode("utf-8")}')
+        #sock.send(b'ACK')
 
 if __name__ == "__main__":
     main()
