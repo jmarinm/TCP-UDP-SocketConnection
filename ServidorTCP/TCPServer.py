@@ -2,6 +2,7 @@ import hashlib
 import socket
 import threading
 import pickle
+import sys
 import time
 
 
@@ -50,7 +51,7 @@ def handle_client(client_socket):
         t_time = t_final-t_inicial
         print(f'[*] Transfer Time {t_time} for client {clientId}')
         t_time = str(t_time).encode()
-        print(t_time)
+        print(sys.getsizeof(t_time))
         sock.send(t_time)
         sock.close()
         
