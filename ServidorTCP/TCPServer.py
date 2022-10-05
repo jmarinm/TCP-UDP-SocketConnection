@@ -28,10 +28,10 @@ def main():
 def handle_client(client_socket):
     with client_socket as sock:
         
-        sock.send(serverMessages['filesCatalog'])
-        #request = sock.recv(1024)
-        #print(f'[*] Received: {request.decode("utf-8")}')
-        #sock.send(b'ACK')
+        #sock.send(serverMessages['filesCatalog'])
+        request = sock.recv(1024)
+        print(f'[*] Received: {request.decode("utf-8")}')
+        sock.send(b'ACK')
 
 if __name__ == "__main__":
     main()
