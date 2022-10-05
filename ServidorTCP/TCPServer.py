@@ -29,8 +29,8 @@ def handle_client(client_socket):
     with client_socket as sock:
         
         sock.send(serverMessages['filesCatalog'])
-        request = sock.recv(1024)
-        print(f'[*] Received: {request.decode("utf-8")}')
+        request = sock.recv(1024).decode("utf-8")
+        print(f'[*] Received: {request}')
         if request[0] == "1":
             sock.send(b'250 file')
         elif request[0] == "2":
