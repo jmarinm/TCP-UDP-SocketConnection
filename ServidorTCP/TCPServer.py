@@ -39,7 +39,9 @@ def handle_client(client_socket):
             file = open('ServidorTCP/Files/100.img','rb')#sock.send(b'100 file')
         
         file = file.read()
-        fileData = [file, hashlib.md5(file).hexdigest()]
+        hash = hashlib.md5(file).hexdigest()
+        fileData = [file, hash]
+        print(f'[*] Hash: {hash}')
         sock.send(pickle.dumps(fileData))
         
 if __name__ == "__main__":
