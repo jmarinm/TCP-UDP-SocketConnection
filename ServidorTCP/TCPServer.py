@@ -51,7 +51,7 @@ def handle_client(client_socket):
         print(f'[*] Transfer Time {t_time} for client {clientId}')
         t_time = str(t_time).encode()
         print(t_time)
-        sock.send(str(t_time))
+        sock.send(t_time)
         sock.close()
         
 if __name__ == "__main__":
