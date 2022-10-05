@@ -7,7 +7,7 @@ import pickle
  
 
 host = '0.0.0.0'
-port = 446
+port = 447
 
 serverMessages = {
     "filesCatalog": b"Which size of file do you want to transfer?\n1 - 250mb file. \n2 - 100mb file\n"
@@ -39,7 +39,7 @@ def handle_client(client_socket):
             file = open('ServidorTCP/Files/100.img','rb')#sock.send(b'100 file')
         
         fileData = [file, hashlib.md5(file).hexdigest()]
-        sock.send(fileData)
+        sock.send(pickle.dumps(fileData))
         
 if __name__ == "__main__":
     main()
