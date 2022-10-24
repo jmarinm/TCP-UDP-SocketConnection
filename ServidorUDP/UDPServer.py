@@ -20,7 +20,6 @@ def main():
     #Se especifíca el protocolo SOCK_STREAM = TCP
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     serversocket.bind((host,port))
-    serversocket.listen(25)
     print(f'[*] Listening on {host}:{port}')
 
     while True:
