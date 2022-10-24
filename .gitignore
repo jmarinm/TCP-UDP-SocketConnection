@@ -1,2 +1,5 @@
 ClienteTCP/ArchivosRecibidos
 ClienteTCP/Logs
+ClienteUDP/ArchivosRecibidos
+ClienteUDP/Logs
+ServidorUDP/ServerFiles

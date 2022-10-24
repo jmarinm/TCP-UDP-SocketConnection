@@ -1,15 +1,17 @@
+from fileinput import filename
 import hashlib
 import socket
 import threading
 import pickle
 import sys
 import time
-
+import os
 
  
 
 host = '0.0.0.0'
 port = 449
+TAM_MSG = 1024 
 
 
 serverMessages = {
@@ -23,35 +25,42 @@ def main():
     print(f'[*] Listening on {host}:{port}')
 
     while True:
-        client, address = serversocket.accept()
-        print(f'[*] Accepted connection from {address[0]}:{address[1]}')
-        client_handler = threading.Thread(target=handle_client,args=(client,))
+        data, address = serversocket.recvfrom(1024)
+        print(f'[*] Message Received From {address[0]}:{address[1]}, Content: {data.decode("utf-8")}')
+        client_handler = threading.Thread(target=handle_message,args=(data,address, serversocket))
         client_handler.start()
 
-def handle_client(client_socket):
-    with client_socket as sock:
-        
-        clientId = sock.recv(1024).decode()
-        sock.send(serverMessages['filesCatalog'])
-        request = sock.recv(1024).decode("utf-8")
-        print(f'[*] Received: {request} from Client {clientId}')
-        if request[0] == "1":
-            file = open('ServidorTCP/Files/250.img','rb') #sock.send(b'250 file')
-        elif request[0] == "2":
-            file = open('ServidorTCP/Files/100.img','rb')#sock.send(b'100 file')
-        
-        file = file.read()
-        hash = hashlib.md5(file).hexdigest()
-        fileData = [file, hash]
-        print(f'[*] Hash: {hash} - Client: {clientId}')
-        t_inicial = time.time()
-        sock.send(pickle.dumps(fileData))
-        t_final = time.time()
-        t_time = t_final-t_inicial
-        print(f'[*] Transfer Time {t_time} for client {clientId}')
-        t_time = str(t_time).encode()
-        sock.send(t_time)
-        sock.close()
-        
+def handle_message(msg, addr, serversocket):
+    
+    msg = msg.decode("utf-8")
+    clientId, fileno = msg.split("-")
+    print(f"[*] Received request from Client {clientId}")
+
+    if fileno == "1": filename = "250.txt"
+    else: filename = "100.txt"
+
+    print(f"[*] Starting to send file '{filename}' to Client {clientId}")
+
+    file = open(f'ServidorUDP/ServerFiles/{filename}','rb')
+    t_inicial = time.time()
+    send_file(file,serversocket, addr)
+    t_final = time.time()
+    t_time = t_final-t_inicial
+    bytesTransfered = os.path.getsize("ServidorUDP/ServerFiles/"+filename)
+    print(f"[*] Envío de archivo finalizado para el Cliente {clientId}")
+    print(f'[*] Transfer Time {round(t_time,2)}s for client {clientId}')
+    print(f'[*] Transfer Rate for Client {clientId}: {round((bytesTransfered/(2**20))/t_time,2)}MB/s')
+    print(f'[*] Bytes transfered {bytesTransfered} for client {clientId}')
+
+
+def send_file(file,socket, addr):
+
+    portion = file.read(TAM_MSG)
+    while portion:
+        socket.sendto(pickle.dumps(portion),addr)
+        portion = file.read(TAM_MSG)
+    
+
+    
 if __name__ == "__main__":
     main()

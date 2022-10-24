@@ -5,7 +5,7 @@ import pickle
 import hashlib
 import time
 
-target_host = "192.168.60.128"
+target_host = "localhost"#"192.168.60.128"
 target_port = 449
 bufSize = 300*(8**6)
 
