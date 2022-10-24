@@ -1,3 +1,2 @@
-clienteTCP.py
-clienteUDP.py
-servidorUDP.py
+ClienteTCP/ArchivosRecibidos
+ClienteTCP/Logs
