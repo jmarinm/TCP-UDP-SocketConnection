@@ -19,7 +19,7 @@ serverMessages = {
 }
 
 def main():
-    #Se especifíca el protocolo SOCK_STREAM = TCP
+    #Se especifíca el protocolo SOCK_DGRAM = UDP
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     serversocket.bind((host,port))
     print(f'[*] Listening on {host}:{port}')
